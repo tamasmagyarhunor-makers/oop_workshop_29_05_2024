@@ -1,3 +1,4 @@
+import datetime
 # Object Oriented Programming
 ## A - Abstraction
 ## 
@@ -53,10 +54,26 @@ class AustralianPerson(Person):
 class GermanPerson(Person):
     def say_hello(self):
         return "Hallo, Guten Tag!"
+    
+### Liskovs example
+class Animal():
+    def breath_air():
+        pass
 
+class Mammal(Animal):
+    def breath_air():
+        pass
+    pass
 
+class Fish():
+    pass
 
+class GoldFish(Mammal): # breaking the principle
 
+    pass
+
+gold_fish = GoldFish()
+gold_fish.breath_air() # => it would break
 
 # ===================== BREAK ====================== # 
 
@@ -85,17 +102,17 @@ class Notebook():
     def __init__(self, write_object):
         self.write_object = write_object
     
-    def write(self, write_object, text):
-        if write_object.type == "ball pen":
+    def write(self, text):
+        if self.write_object.type == "ball pen":
             self.__turn_on(write_object)
             return text
-        elif write_object.type == "ink pen":
+        elif self.write_object.type == "ink pen":
             if self.__has_enough_ink(write_object):
                 return text
             else:
                 self.__refill_ink(write_object)
                 return text
-        elif write_object.type == 'pencil':
+        elif self.write_object.type == 'pencil':
             if self.__sharp_enough(write_object):
                 return text
             else:
@@ -252,4 +269,180 @@ class Post():
     
 
     
+# SOLID principles
+## Single Responsibility principle
+## Open/Closed principle
+## Liskov's substitution principle
+## Interface seggregation principle
+## Dependency Inversion principle
+
+
+## Single Responsibility principle
+
+### not singularly responsible
+### singularly responsible
+
+class Account():
+    # only the accountants in the business are responsible for requiring features for the Account object.
+    pass
+
+#### 
+
+class Transaction():
+    def __init__(self, sum, type):
+        transactions = []
+        self.sum = sum
+        self.type = type
+        self.date = datetime.now()
+        # function
+        # function
+
+class StatementPrinter():
+    def __init__(self):
+        return
     
+    def print_statement(self, transaction):
+        # make a new statement string to store statement data
+        # add header
+        # iterate over transactions data
+        # add transaction data for each transaction object to the string
+        # add footer
+        # return or print statement string
+        return
+
+class BankAccount():
+    def __init__(self):
+        self.balance = 0
+        self.transactions = Transaction()
+        self.printer = StatementPrinter()
+
+    def withdraw(self, sum):
+        # do the checks
+        # make new transaction data
+        # withdraw
+        return
+
+    def deposit(self, sum):
+        # do the checks
+        # make new transaction data
+        # self.transactions.add()
+        # {'type': 'deposit', 'sum': sum, 'date': datetime.now()} new Transaction(sum, type)
+        # deposit
+        return
+    
+    def print_statement(self, transaction):
+        # self.printer.print_statement(transaction)
+        return
+    
+
+  ## Open/Closed principle
+
+  ## Liskov's substitution principle
+
+class HTTPRequest():
+    pass
+
+class HTTPResponse():
+    pass
+
+class JSONResponse(HTTPResponse):
+    pass
+
+class Application():
+    users = []
+    def send_response(res :HTTPResponse): # HTTPResponse
+       res.data.users = users
+       return res
+    
+
+class SomeOtherApplication():
+
+    def deal_with_response():
+        response = JSONResponse()
+        send_response(response)
+
+  ## Interface seggregation principle
+
+class Animal(): # abstract or built in an unusable way, only to force behaviour on its child classes
+    def __init__(self):
+        raise Exception('Animal class its meant to be abstract, not to be instantiated')
+    
+    def move(self):
+        raise Exception('move() hasnt been implemented, please implement it!')
+    
+    def drink_beer(self):
+        raise Exception('drink a beer')
+
+
+class Zebra(Animal):
+    def __init__(self):
+        pass
+
+    def move():
+        return 'it moves'
+    
+    def drink_beer(self):
+        return 'drinks a beer'
+
+animal = Zebra() # => 
+
+
+  ## Dependency Inversion principle
+  ### Classes should depend on Abstractions not concretions
+
+  ### Depency Inversion principle NOT respected
+class Base64Hasher():
+    # hashing password with 64bit security
+    pass
+
+class Base128Hasher():
+    pass
+
+class Base256Hasher():
+    pass
+
+if date < '2024':
+    use PasswordService2024
+
+if date < '2025':
+    use PasswordService2025
+
+
+# tighly coupled
+class PasswordService():
+    def __init__(self):
+        self.hasher = Base64Hasher()
+
+    def hash_password(self, string):
+        return self.hasher.hash(string)
+    
+
+  ### Depency Inversion principle respected
+
+#### 2023
+hasher = Base64Hasher()
+
+password_service = PasswordService(hasher)
+password_service.hash_password('admin123')
+
+#### 2024
+
+hasher = Base128Hasher()
+
+password_service = PasswordService(hasher)
+password_service.hash_password('admin123')
+
+#### 2025
+
+hasher = Base256Hasher()
+
+password_service = PasswordService(hasher)
+password_service.hash_password('admin123')
+
+
+class PasswordService():
+    def __init__(self, hasher):
+        self.hasher = hasher
+
+    def hash_password(self, string):
+        return self.hasher.hash(string)
