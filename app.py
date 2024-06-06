@@ -15,7 +15,7 @@ import datetime
 ### Not using Inheritance
 class AmericanPerson():
     def say_hello():
-        return "Hey pal, how are you?"
+        return "Hey pal, how are you?" # 1.
 
 class GermanPerson():
     def say_hello():
@@ -27,11 +27,11 @@ class SpanishPerson():
 
 class EnglishPerson():
     def say_hello():
-        return "Hey pal, how are you?"
+        return "Hey pal, how are you?" # 2.
     
 class AustralianPerson():
     def say_hello():
-        return "Hey pal, how are you?"
+        return "Hey pal, how are you?" # 3.
 
 ### Using Inheritance
 class Person():
@@ -119,7 +119,7 @@ class Notebook():
                 self.__sharpen(write_object)
                 return text
         else:
-            return "need some write object to write"
+            raise Exception("need some write object to write")
             
     # private methods
     def __sharpen(write_object):
@@ -213,7 +213,7 @@ class InkPen(WriteObject):
         pass
 
 
-# BallPen, InkPen and Pencil
+# BallPen, InkPen and Pencil => WriteObject 
 class Notebook():
     def __init__(self, write_object):
         self.write_object = write_object
@@ -326,11 +326,12 @@ class BankAccount():
         # do the checks
         # make new transaction data
         # self.transactions.add()
-        # {'type': 'deposit', 'sum': sum, 'date': datetime.now()} new Transaction(sum, type)
+        # {'type': 'deposit', 'sum': sum, 'date': datetime.now()} => new Transaction(sum, type)
         # deposit
         return
     
     def print_statement(self, transaction):
+        # ....
         # self.printer.print_statement(transaction)
         return
     
@@ -355,6 +356,8 @@ class Application():
        return res
     
 
+    
+
 class SomeOtherApplication():
 
     def deal_with_response():
@@ -370,19 +373,33 @@ class Animal(): # abstract or built in an unusable way, only to force behaviour 
     def move(self):
         raise Exception('move() hasnt been implemented, please implement it!')
     
-    def drink_beer(self):
-        raise Exception('drink a beer')
+    # def fly(self):
+    #     raise Exception('please implement the fly method')
 
+class Bird(Animal):
+    def __init__(self):
+        pass
 
-class Zebra(Animal):
+    def fly(self):
+        return 'it flies'
+    
+class Hawk(Bird):
+    pass
+
+class Mammal(Animal):
+    pass
+
+class Zebra(Mammal):
     def __init__(self):
         pass
 
     def move():
         return 'it moves'
     
-    def drink_beer(self):
-        return 'drinks a beer'
+    # def fly(self):
+    #     return 'fly'
+
+
 
 animal = Zebra() # => 
 
@@ -419,30 +436,37 @@ class PasswordService():
 
   ### Depency Inversion principle respected
 
+class BaseHasher():
+
+    def hash_password():
+        raise Exception('you have implement the hash_password method()')
+    
+
 #### 2023
-hasher = Base64Hasher()
+hasher = Base64Hasher() # => BaseHasher
 
 password_service = PasswordService(hasher)
 password_service.hash_password('admin123')
 
 #### 2024
 
-hasher = Base128Hasher()
+hasher = Base128Hasher() # => BaseHasher
 
 password_service = PasswordService(hasher)
 password_service.hash_password('admin123')
 
 #### 2025
 
-hasher = Base256Hasher()
+hasher = Base256Hasher() # => BaseHasher
 
 password_service = PasswordService(hasher)
 password_service.hash_password('admin123')
 
 
 class PasswordService():
-    def __init__(self, hasher):
+    def __init__(self, hasher = Base256Hasher()):
         self.hasher = hasher
 
     def hash_password(self, string):
         return self.hasher.hash(string)
+    
